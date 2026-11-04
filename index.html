@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Types of Slopes Challenge</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 20px;
+      font-family: Arial, sans-serif;
+      background: #f2f3d8;
+      color: #26330f;
+    }
+
+    .quiz-container {
+      max-width: 750px;
+      margin: auto;
+      padding: 25px;
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 5px 18px rgba(0, 0, 0, 0.16);
+    }
+
+    h1 {
+      margin-bottom: 8px;
+      text-align: center;
+      color: #476817;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: #555;
+    }
+
+    #progress {
+      margin: 25px 0 10px;
+      font-weight: bold;
+      color: #476817;
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 12px;
+      margin-bottom: 25px;
+      overflow: hidden;
+      background: #e1e1e1;
+      border-radius: 20px;
+    }
+
+    #progressFill {
+      width: 0%;
+      height: 100%;
+      background: #7fa33c;
+      transition: width 0.3s;
+    }
+
+    #questionBox {
+      padding: 20px;
+      background: #edf2d5;
+      border-radius: 14px;
+    }
+
+    #questionText {
+      margin-top: 0;
+      font-size: 21px;
+      line-height: 1.4;
+    }
+
+    .answer-option {
+      display: block;
+      margin: 12px 0;
+      padding: 13px;
+      background: white;
+      border: 2px solid #c8d39e;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .answer-option:hover {
+      background: #f7f9e9;
+      border-color: #7fa33c;
+    }
+
+    input[type="radio"] {
+      margin-right: 10px;
+    }
+
+    button {
+      width: 100%;
+      margin-top: 18px;
+      padding: 14px;
+      color: white;
+      background: #476817;
+      border: none;
+      border-radius: 10px;
+      font-size: 17px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #678c29;
+    }
+
+    button:disabled {
+      cursor: not-allowed;
+      background: #999;
+    }
+
+    #feedback {
+      display: none;
+      margin-top: 20px;
+      padding: 18px;
+      border-radius: 12px;
+      line-height: 1.5;
+    }
+
+    .correct-feedback {
+      color: #155b20;
+      background: #d9f3dc;
+      border-left: 6px solid #2e8b3c;
+    }
+
+    .incorrect-feedback {
+      color: #8c1515;
+      background: #ffe1e1;
+      border-left: 6px solid #c0392b;
+    }
+
+    #posterHelp {
+      display: none;
+      margin-top: 20px;
+      padding: 15px;
+      text-align: center;
+      background: #fff7de;
+      border-radius: 12px;
+    }
+
+    #posterHelp img {
+      width: 100%;
+      max-height: 600px;
+      margin-top: 10px;
+      object-fit: contain;
+      border-radius: 10px;
+    }
+
+    #finalScreen {
+      display: none;
+      text-align: center;
+    }
+
+    #finalScore {
+      padding: 22px;
+      background: #edf2d5;
+      border-radius: 14px;
+      font-size: 22px;
+      font-weight: bold;
+    }
+
+    #incorrectList {
+      margin-top: 20px;
+      padding: 18px;
+      text-align: left;
+      background: #fff3f3;
+      border-radius: 12px;
+    }
+
+    #incorrectList li {
+      margin-bottom: 12px;
+    }
+
+    .secondary-button {
+      background: #d97834;
+    }
+
+    .secondary-button:hover {
+      background: #b85d20;
+    }
+
+    footer {
+      margin-top: 30px;
+      text-align: center;
+      color: #666;
+      font-size: 13px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="quiz-container">
+
+    <div id="quizScreen">
+      <h1>Types of Slopes Challenge</h1>
+
+      <p class="subtitle">
+        Apply your mapwork knowledge to each question.
+      </p>
+
+      <div id="progress"></div>
+
+      <div class="progress-bar">
+        <div id="progressFill"></div>
+      </div>
+
+      <div id="questionBox">
+        <h2 id="questionText"></h2>
+        <div id="answerOptions"></div>
+      </div>
+
+      <button id="submitButton" onclick="submitAnswer()">
+        Check Answer
+      </button>
+
+      <div id="feedback"></div>
+
+      <div id="posterHelp">
+        <h3>Use the poster to review the concept</h3>
+
+        <p>
+          Study the contour spacing and slope profile before moving
+          to the next question.
+        </p>
+
+        <img
+          src="slopes-poster.png"
+          alt="Types of slopes learning poster"
+        >
+      </div>
+
+      <button
+        id="nextButton"
+        onclick="nextQuestion()"
+        style="display: none;"
+      >
+        Next Question
+      </button>
+    </div>
+
+    <div id="finalScreen">
+      <h1>Quiz Completed</h1>
+
+      <div id="finalScore"></div>
+
+      <div id="incorrectList"></div>
+
+      <button id="retryButton" onclick="retryIncorrect()">
+        Retake Incorrect Questions
+      </button>
+
+      <button class="secondary-button" onclick="restartQuiz()">
+        Restart the Full Quiz
+      </button>
+    </div>
+
+    <footer>
+      Created by Reabetswe Motsoto |
+      Licensed under CC BY 4.0
+    </footer>
+
+  </div>
+
+  <script>
+    const questions = [
+      {
+        question:
+          "1. A topographic map shows contour lines that are widely spaced. What can you conclude about the gradient?",
+        options: [
+          "The gradient is gentle",
+          "The gradient is steep",
+          "The area is below sea level",
+          "The slope has a tectonic origin"
+        ],
+        answer: 0,
+        explanation:
+          "Widely spaced contour lines show that elevation changes slowly over a long horizontal distance. This indicates a gentle gradient."
+      },
+
+      {
+        question:
+          "2. A road planner must choose the easiest route for vehicles climbing a hill. Which area should the planner select?",
+        options: [
+          "An area where contour lines are closest together",
+          "An area where contour lines are widely spaced",
+          "The highest point on the hill",
+          "An area where contour lines form closed circles"
+        ],
+        answer: 1,
+        explanation:
+          "Widely spaced contours indicate a gentle slope. A gentler gradient is generally easier and safer for vehicles to climb."
+      },
+
+      {
+        question:
+          "3. When moving downhill on a convex slope, the contour lines become progressively closer together. What happens to the gradient?",
+        options: [
+          "It becomes progressively gentler",
+          "It becomes progressively steeper",
+          "It remains constant",
+          "It becomes completely level"
+        ],
+        answer: 1,
+        explanation:
+          "Closer contour lines indicate a steeper gradient. Therefore, this convex slope becomes progressively steeper downhill."
+      },
+
+      {
+        question:
+          "4. On a concave slope, contour lines become more widely spaced toward the foot. What does this indicate?",
+        options: [
+          "The slope becomes gentler downhill",
+          "The slope becomes steeper downhill",
+          "Elevation increases downhill",
+          "The contour interval changes"
+        ],
+        answer: 0,
+        explanation:
+          "Increasing space between contour lines shows that elevation changes more slowly. The slope therefore becomes gentler downhill."
+      },
+
+      {
+        question:
+          "5. Two slopes rise through the same vertical height. Slope A covers a longer horizontal distance than Slope B. Which conclusion is correct?",
+        options: [
+          "Slope A is steeper than Slope B",
+          "Slope B is gentler than Slope A",
+          "Slope A is gentler than Slope B",
+          "Both slopes must have the same gradient"
+        ],
+        answer: 2,
+        explanation:
+          "The same vertical rise spread over a longer horizontal distance produces a gentler gradient. Therefore, Slope A is gentler."
+      },
+
+      {
+        question:
+          "6. A map shows a steep slope, but there is no visible fault line or displaced rock layer. Can you conclude that the slope is tectonic?",
+        options: [
+          "Yes, because every steep slope is tectonic",
+          "Yes, because close contours prove faulting",
+          "No, because contour spacing shows gradient but not necessarily the process that formed it",
+          "No, because tectonic slopes are always gentle"
+        ],
+        answer: 2,
+        explanation:
+          "Contour spacing shows the steepness of a slope. Additional evidence is required to prove that faulting, uplift or another tectonic process formed it."
+      },
+
+      {
+        question:
+          "7. An alluvial fan is found where a river leaves a steep valley and enters a flatter area. Why does deposition occur there?",
+        options: [
+          "The river gains energy and carries more material",
+          "The river loses energy and deposits some of its load",
+          "The contour interval becomes smaller",
+          "Tectonic uplift immediately stops the river"
+        ],
+        answer: 1,
+        explanation:
+          "As the river reaches flatter ground, its velocity and energy decrease. It can no longer transport all its sediment, so material is deposited."
+      },
+
+      {
+        question:
+          "8. A settlement is planned below a very steep convex slope. Which risk should planners investigate most carefully?",
+        options: [
+          "Whether the contour interval changes every year",
+          "Whether material could move rapidly downslope",
+          "Whether elevation increases toward the valley",
+          "Whether all steep slopes were formed by rivers"
+        ],
+        answer: 1,
+        explanation:
+          "A steepening downhill gradient may increase the movement of water, soil and rock. Planners should assess erosion, rockfalls and slope instability."
+      }
+    ];
+
+    let activeQuestions = [...questions];
+    let currentQuestion = 0;
+    let score = 0;
+    let incorrectQuestions = [];
+    let answerSubmitted = false;
+    let retryMode = false;
+
+    function displayQuestion() {
+      answerSubmitted = false;
+
+      const item = activeQuestions[currentQuestion];
+
+      document.getElementById("questionText").textContent =
+        item.question;
+
+      document.getElementById("answerOptions").innerHTML =
+        item.options.map((option, index) => `
+          <label class="answer-option">
+            <input
+              type="radio"
+              name="answer"
+              value="${index}"
+            >
+            ${option}
+          </label>
+        `).join("");
+
+      document.getElementById("progress").textContent =
+        `Question ${currentQuestion + 1} of ${activeQuestions.length}`;
+
+      const percentage =
+        ((currentQuestion + 1) / activeQuestions.length) * 100;
+
+      document.getElementById("progressFill").style.width =
+        `${percentage}%`;
+
+      document.getElementById("feedback").style.display = "none";
+      document.getElementById("posterHelp").style.display = "none";
+      document.getElementById("nextButton").style.display = "none";
+      document.getElementById("submitButton").style.display = "block";
+    }
+
+    function submitAnswer() {
+      if (answerSubmitted) {
+        return;
+      }
+
+      const selected =
+        document.querySelector('input[name="answer"]:checked');
+
+      if (!selected) {
+        alert("Please select an answer before continuing.");
+        return;
+      }
+
+      answerSubmitted = true;
+
+      const selectedAnswer = Number(selected.value);
+      const item = activeQuestions[currentQuestion];
+      const feedback = document.getElementById("feedback");
+
+      const radioButtons =
+        document.querySelectorAll('input[name="answer"]');
+
+      radioButtons.forEach(button => {
+        button.disabled = true;
+      });
+
+      if (selectedAnswer === item.answer) {
+        score++;
+
+        feedback.className = "correct-feedback";
+        feedback.innerHTML = `
+          <strong>Correct!</strong><br>
+          ${item.explanation}
+        `;
+      } else {
+        if (!incorrectQuestions.includes(item)) {
+          incorrectQuestions.push(item);
+        }
+
+        feedback.className = "incorrect-feedback";
+        feedback.innerHTML = `
+          <strong>Incorrect.</strong><br><br>
+          <strong>Correct answer:</strong>
+          ${item.options[item.answer]}<br><br>
+          ${item.explanation}
+        `;
+
+        document.getElementById("posterHelp").style.display =
+          "block";
+      }
+
+      feedback.style.display = "block";
+      document.getElementById("submitButton").style.display = "none";
+
+      const nextButton = document.getElementById("nextButton");
+
+      nextButton.textContent =
+        currentQuestion === activeQuestions.length - 1
+          ? "View Results"
+          : "Next Question";
+
+      nextButton.style.display = "block";
+    }
+
+    function nextQuestion() {
+      currentQuestion++;
+
+      if (currentQuestion < activeQuestions.length) {
+        displayQuestion();
+      } else {
+        showResults();
+      }
+    }
+
+    function showResults() {
+      document.getElementById("quizScreen").style.display = "none";
+      document.getElementById("finalScreen").style.display = "block";
+
+      const percentage =
+        Math.round((score / activeQuestions.length) * 100);
+
+      document.getElementById("finalScore").innerHTML = `
+        Your score: ${score}/${activeQuestions.length}
+        (${percentage}%)
+      `;
+
+      const incorrectList =
+        document.getElementById("incorrectList");
+
+      const retryButton =
+        document.getElementById("retryButton");
+
+      if (incorrectQuestions.length === 0) {
+        incorrectList.innerHTML = `
+          <h3>Excellent!</h3>
+          <p>You answered every question correctly.</p>
+        `;
+
+        retryButton.style.display = "none";
+      } else {
+        incorrectList.innerHTML = `
+          <h3>Questions to review</h3>
+          <ol>
+            ${incorrectQuestions.map(item => `
+              <li>${item.question.replace(/^\d+\.\s*/, "")}</li>
+            `).join("")}
+          </ol>
+        `;
+
+        retryButton.style.display = "block";
+        retryButton.textContent =
+          `Retake ${incorrectQuestions.length} Incorrect Question(s)`;
+      }
+    }
+
+    function retryIncorrect() {
+      activeQuestions = [...incorrectQuestions];
+      currentQuestion = 0;
+      score = 0;
+      incorrectQuestions = [];
+      retryMode = true;
+
+      document.getElementById("finalScreen").style.display = "none";
+      document.getElementById("quizScreen").style.display = "block";
+
+      displayQuestion();
+    }
+
+    function restartQuiz() {
+      activeQuestions = [...questions];
+      currentQuestion = 0;
+      score = 0;
+      incorrectQuestions = [];
+      retryMode = false;
+
+      document.getElementById("finalScreen").style.display = "none";
+      document.getElementById("quizScreen").style.display = "block";
+
+      displayQuestion();
+    }
+
+    displayQuestion();
+  </script>
+
+</body>
+</html>
